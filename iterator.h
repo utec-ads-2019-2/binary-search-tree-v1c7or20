@@ -2,22 +2,23 @@
 #define ITERATOR_H
 
 #include "node.h"
+#include <stack>
 
 template <typename T> 
 class Iterator {
     private:
-        Node<T> *current;
+        stack<Node<T>*>* current;
 
     public:
         Iterator() {
             // TODO
         }
 
-        Iterator(Node<T> *node) {
+        Iterator(stack<Node<T>*>*nodes) {
             // TODO
         }
 
-        Iterator<T>& operator=(const Iterator<T> &other) {          
+        Iterator<T>& operator=(const Iterator<T> &other) {
             // TODO
         }
 

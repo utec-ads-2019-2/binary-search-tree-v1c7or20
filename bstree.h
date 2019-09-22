@@ -3,56 +3,195 @@
 
 #include "node.h"
 #include "iterator.h"
+#include <stack>
 
 template <typename T> 
 class BSTree {
     Node<T> *root;
+    size_t nodes;
 
-    public:
-        BSTree() : root(nullptr) {};
+    void print(Node<T>* node){
+        Node<T> *iterador = node;
+        if (iterador->left != nullptr){
+            print(iterador->left);
+        }
+        cout<<iterador->data<<" ";
+        if (iterador->right != nullptr){
+            print(iterador->right);
+        }
+    }
 
-        bool find(T data) { 
-            // TODO
+     Node<T>* remove( Node<T> *node, int data) {
+        if (node == nullptr) {
+            return nullptr;
+        }
+        if (data < node->data) {
+            node->left = remove(node->left, data);
+        } else if (data > node->data) {
+            node->right = remove(node->right, data);
+        } else {
+            if (node->left == nullptr && node->right == nullptr) {
+                nodes--;
+                delete(node);
+                node = nullptr;
+            }
+            else if (node->left == nullptr) {
+                Node<T> *temp = node;
+                node = node->right;
+                nodes--;
+                delete temp;
+            }
+            else if (node->right == nullptr) {
+                Node<T> *temp = node;
+                node = node->left;
+                nodes--;
+                delete temp;
+            }
+            else {
+                Node<T> *temp = avanza(node->right);
+                node->data = temp->data;
+                node->right = remove(node->right, temp->data);
+            }
+        }
+        return node;
+    }
+
+    Node<T> *avanza(Node<T> *node) {
+        if (node->left != nullptr) {
+            return avanza(node->left);
+        }
+        return node;
+    }
+
+public:
+        BSTree() : root(nullptr), nodes(0){};
+
+        bool find(T data) {
+            Node<T> *iterador = root;
+            while(data != iterador->data){
+                if (data<iterador->data and iterador->left ){
+                    iterador = iterador->left;
+                } else{
+                    if (data> iterador->data and iterador->right ){
+                        iterador = iterador->right;
+                    } else return false;
+                }
+            }
+            return true;
         } 
 
-        bool insert(T data) {
-            // TODO
+        void insert(T data) {
+            Node<T> * nuevo = new Node<T>(data);
+            if (nodes == 0){
+                root = nuevo;
+                nodes++;
+            }else{
+                Node<T> *iterador = root;
+                bool  control = true;
+                while (control){
+                    if (data != iterador->data){
+                        if (data< iterador->data){
+                            if(iterador->left ){
+                                iterador = iterador->left;
+                            }else{
+                                iterador->left = nuevo;
+                              nodes++;
+                                control = false;
+                            }
+                        }else{
+                            if (iterador->right ){
+                                iterador =iterador->right;
+                            }else{
+                                iterador->right = nuevo;
+                                 nodes++;
+                                control = false;
+                            }
+                        }
+                    }else
+                        control = false;
+                }
+            }
         }
 
         bool remove(T data) {
-            // TODO
+            return remove(root, data) != nullptr;
         }
 
         size_t size() {
-            // TODO
+            return nodes;
         }
 
         size_t height() {
-            // TODO
+            auto temp = root;
+            if (!temp) {
+                return 0;
+            } else {
+                size_t left = getHeight(temp->left);
+                size_t rigth   = getHeight(temp->right);
+                if (left > rigth) {
+                    return (left + 1);
+                } else {
+                    return (rigth + 1);
+                }
+            }
         }
 
+
         void traversePreOrder() {
-            // TODO
+            Node<T> *iterador = root;
+            if (iterador != nullptr){
+                cout<<iterador->data<<" ";
+                if (iterador->left != nullptr){
+                    print(iterador->left);
+                }
+                if (iterador->right != nullptr){
+                    print(iterador->right);
+                }
+            }else throw "No elements";
         }
 
         void traverseInOrder() {
-            // TODO
+            Node<T> *iterador = root;
+            if (iterador != nullptr){
+                if (iterador->left != nullptr){
+                    print(iterador->left);
+                }
+                cout<<iterador->data<<" ";
+                if (iterador->right != nullptr){
+                    print(iterador->right);
+                }
+            } else throw "No elements";
         }
 
         void traversePostOrder() {
+            Node<T> *iterador = root;
+            if (iterador != nullptr){
+                if (iterador->left != nullptr){
+                    print(iterador->left);
+                }
+                if (iterador->right != nullptr){
+                    print(iterador->right);
+                }
+                cout<<iterador->data<<" ";
+            } else throw "No elements";
+        }
+
+        void armariterador( stack<Node<T>*> &iterador, Node<T>* actual){
             // TODO
+
         }
 
         Iterator<T> begin() {
             // TODO
+
         }
 
-        Iterator<T> end() { 
+        Iterator<T> end() {
             // TODO
         }
 
         ~BSTree() {
-            // TODO
+            root->killSelf();
         }
 };
 
