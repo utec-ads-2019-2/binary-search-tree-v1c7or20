@@ -2,40 +2,47 @@
 #define ITERATOR_H
 
 #include "node.h"
-#include <stack>
+#include <vector>
 
 template <typename T> 
 class Iterator {
     private:
-        stack<Node<T>*>* current;
-
+        vector<Node<T>*>* current;
+        int actual=0;
+        Node<T>* dato;
     public:
         Iterator() {
             // TODO
         }
 
-        Iterator(stack<Node<T>*>*nodes) {
-            // TODO
+        Iterator(vector<Node<T>*>*nodes) {
+            this->current = nodes;
+            this->dato = nodes->at(0);
         }
 
         Iterator<T>& operator=(const Iterator<T> &other) {
-            // TODO
+            this->current = other.current;
+            this->dato = current->at(0);
         }
 
         bool operator!=(Iterator<T> other) {
-            // TODO
+            return this->dato != other.dato;
         }
 
         Iterator<T>& operator++() {
-            // TODO
+            actual++;
+            dato = current->at(actual);
+            return *this;
         }
 
         Iterator<T>& operator--() {
-            // TODO
+            actual--;
+            dato = current->at(actual);
+            return *this;
         }
 
         T operator*() {
-            // TODO
+            return this->dato->data;
         }
 };
 

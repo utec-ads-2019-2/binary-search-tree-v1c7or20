@@ -3,7 +3,7 @@
 
 #include "node.h"
 #include "iterator.h"
-#include <stack>
+#include <vector>
 
 template <typename T> 
 class BSTree {
@@ -176,18 +176,28 @@ public:
             } else throw "No elements";
         }
 
-        void armariterador( stack<Node<T>*> &iterador, Node<T>* actual){
-            // TODO
-
+        void armariterador( vector<Node<T>*> *iterador, Node<T>* actual){
+            if (actual->left)
+                armariterador(iterador,actual->left);
+            iterador->push_back(actual);
+            if(actual->right)
+                armariterador(iterador,actual->right);
         }
 
         Iterator<T> begin() {
-            // TODO
-
+            vector<Node<T>*>* iterador;
+            iterador=new vector<Node<T>*>;
+            armariterador(iterador,root);
+            Node<T>* nulo = nullptr;
+            iterador->push_back(nulo);
+            return Iterator<T>(iterador);
         }
 
         Iterator<T> end() {
-            // TODO
+            vector<Node<T>*>* iterador;
+            Node<T> * final = nullptr;
+            iterador->push_back(final);
+            return Iterator<T>(iterador);
         }
 
         ~BSTree() {
