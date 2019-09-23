@@ -12,12 +12,14 @@ class BSTree {
 
     void print(Node<T>* node){
         Node<T> *iterador = node;
-        if (iterador->left != nullptr){
-            print(iterador->left);
-        }
-        cout<<iterador->data<<" ";
-        if (iterador->right != nullptr){
-            print(iterador->right);
+        if(nodes>0){
+            if (iterador->left != nullptr){
+                print(iterador->left);
+            }
+            cout<<iterador->data<<" ";
+            if (iterador->right != nullptr){
+                print(iterador->right);
+            }
         }
     }
 
@@ -31,6 +33,8 @@ class BSTree {
             node->right = remove(node->right, data);
         } else {
             if (node->left == nullptr && node->right == nullptr) {
+                if (node == root)
+                    root = nullptr;
                 nodes--;
                 delete(node);
                 node = nullptr;
@@ -38,12 +42,16 @@ class BSTree {
             else if (node->left == nullptr) {
                 Node<T> *temp = node;
                 node = node->right;
+                if (temp == root)
+                    root = node;
                 nodes--;
                 delete temp;
             }
             else if (node->right == nullptr) {
                 Node<T> *temp = node;
                 node = node->left;
+                if (temp == root)
+                    root = node;
                 nodes--;
                 delete temp;
             }
@@ -67,6 +75,9 @@ public:
         BSTree() : root(nullptr), nodes(0){};
 
         bool find(T data) {
+            if (root == nullptr){
+                return false;
+            }
             Node<T> *iterador = root;
             while(data != iterador->data){
                 if (data<iterador->data and iterador->left ){
@@ -114,7 +125,7 @@ public:
         }
 
         bool remove(T data) {
-            return remove(root, data) != nullptr;
+             return remove(root, data) != nullptr;
         }
 
         size_t size() {
@@ -160,7 +171,8 @@ public:
                 if (iterador->right != nullptr){
                     print(iterador->right);
                 }
-            } else throw "No elements";
+            } else throw out_of_range("No elements");
+            cout<<endl;
         }
 
         void traversePostOrder() {
@@ -177,11 +189,13 @@ public:
         }
 
         void armariterador( vector<Node<T>*> *iterador, Node<T>* actual){
-            if (actual->left)
-                armariterador(iterador,actual->left);
-            iterador->push_back(actual);
-            if(actual->right)
-                armariterador(iterador,actual->right);
+            if (actual != nullptr){
+                if (actual->left)
+                    armariterador(iterador,actual->left);
+                iterador->push_back(actual);
+                if(actual->right)
+                    armariterador(iterador,actual->right);
+            }
         }
 
         Iterator<T> begin() {
@@ -194,7 +208,7 @@ public:
         }
 
         Iterator<T> end() {
-            vector<Node<T>*>* iterador;
+            vector<Node<T>*> *iterador = new vector<Node<T>*>;
             Node<T> * final = nullptr;
             iterador->push_back(final);
             return Iterator<T>(iterador);
@@ -202,6 +216,7 @@ public:
 
         ~BSTree() {
             root->killSelf();
+            root = nullptr;
         }
 };
 

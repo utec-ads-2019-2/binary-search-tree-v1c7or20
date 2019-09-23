@@ -39,10 +39,10 @@ void Tester::testBSFTree(Mocker mocker, vector<T> elements) {
         ++it;
     }
 
-  /*  for (int j = elements.size() - 1; j >= 0; --j) {
+    for (int j = elements.size() - 1; j >= 0; --j) {
         --it;
         ASSERT(elements.at(j) == *it, "There is a problem with the iterator (--)");
-    }*/
+    }
 }
 
 template <typename T>
