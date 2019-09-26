@@ -188,29 +188,26 @@ public:
             } else throw "No elements";
         }
 
-        void armariterador( vector<Node<T>*> *iterador, Node<T>* actual){
+        void armariterador( stack<Node<T>*> *iterador, Node<T>* actual){
             if (actual != nullptr){
-                if (actual->left)
-                    armariterador(iterador,actual->left);
-                iterador->push_back(actual);
-                if(actual->right)
-                    armariterador(iterador,actual->right);
+                iterador->push(actual);
+                armariterador(iterador,actual->left);
             }
         }
 
         Iterator<T> begin() {
-            vector<Node<T>*>* iterador;
-            iterador=new vector<Node<T>*>;
-            armariterador(iterador,root);
+            stack<Node<T>*>* stacks;
+            stacks=new stack<Node<T>*>;
             Node<T>* nulo = nullptr;
-            iterador->push_back(nulo);
-            return Iterator<T>(iterador);
+            stacks->push(nulo);
+            armariterador(stacks,root);
+            return Iterator<T>(stacks);
         }
 
         Iterator<T> end() {
-            vector<Node<T>*> *iterador = new vector<Node<T>*>;
+            stack<Node<T>*> *iterador = new stack<Node<T>*>;
             Node<T> * final = nullptr;
-            iterador->push_back(final);
+            iterador->push(final);
             return Iterator<T>(iterador);
         }
 

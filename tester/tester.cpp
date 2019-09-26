@@ -38,11 +38,11 @@ void Tester::testBSFTree(Mocker mocker, vector<T> elements) {
         ASSERT(elements.at(j) == *it, "There is a problem with the iterator (++)");
         ++it;
     }
-
+/*
     for (int j = elements.size() - 1; j >= 0; --j) {
         --it;
         ASSERT(elements.at(j) == *it, "There is a problem with the iterator (--)");
-    }
+    }*/
 }
 
 template <typename T>
