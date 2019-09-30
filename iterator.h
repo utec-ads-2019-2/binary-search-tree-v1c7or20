@@ -46,6 +46,7 @@ class Iterator {
         }*/
 
         T operator*() {
+            // En caso de null?
             return (this->current->top())->data;
         }
 };

@@ -137,6 +137,7 @@ public:
             if (!temp) {
                 return 0;
             } else {
+                // Podrías reducir este código
                 size_t left = getHeight(temp->left);
                 size_t rigth   = getHeight(temp->right);
                 if (left > rigth) {
@@ -162,6 +163,7 @@ public:
         }
 
         void traverseInOrder() {
+            // Como es solo un print, podrías no imprimir nada en vez de lanzar una excepción
             Node<T> *iterador = root;
             if (iterador != nullptr){
                 if (iterador->left != nullptr){
